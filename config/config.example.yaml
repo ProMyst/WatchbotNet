@@ -1,0 +1,80 @@
+# WatchbotNet Configuration
+# Copy to config.yaml and fill in your keys
+
+# API Keys
+helius_api_key: "YOUR_HELIUS_KEY"
+bot_secret_key: "YOUR_WALLET_PRIVATE_KEY"
+
+# VPS Connection (for data pull)
+vps_host: "157.230.62.53"
+vps_user: "root"
+vps_watchdog_db: "/root/AltData/Pipeline/data/watchdog.db"
+vps_trade_logs: "/root/Watchbot/logs/"
+
+# Solana
+sol_mint: "So11111111111111111111111111111111111111112"
+jupiter_api: "https://api.jup.ag/swap/v2"
+helius_rpc: "https://mainnet.helius-rpc.com"
+helius_wss: "wss://mainnet.helius-rpc.com"
+
+# Model Architecture
+model:
+  type: "lstm"                    # lstm, cnn, transformer
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.2
+  sequence_length: 60            # 60 seconds of history
+  feature_dim: 32                # features per timestep
+  output_classes: 3              # buy, sell, hold
+
+# Training
+training:
+  batch_size: 256
+  learning_rate: 0.001
+  epochs: 100
+  early_stopping_patience: 10
+  train_split: 0.70
+  val_split: 0.15
+  test_split: 0.15
+  purge_hours: 2                 # gap between train/val/test
+  optimizer: "adam"
+  scheduler: "cosine"
+
+# Live Trading
+trading:
+  max_positions: 3
+  base_size_pct: 0.10
+  stop_loss_pct: 0.03
+  trailing_stop_pct: 0.05
+  trailing_activate_pct: 0.02
+  max_hold_minutes: 30
+  partial_exit_pct: 0.80
+  runner_trail_pct: 0.08
+  runner_max_hold_minutes: 60
+  daily_loss_limit_pct: 0.15
+  max_drawdown_halt_pct: 0.30
+  slippage_bps: 300
+  min_liquidity_usd: 10000
+  min_mcap_usd: 50000
+  min_vol_surge: 1.0
+  stop_cooldown_minutes: 30
+
+# Pool Monitoring
+pools:
+  max_watched: 20                # start with 20, scale up
+  rotation_interval_sec: 60      # re-pick hottest pools every 60s
+  min_volume_5m: 1000            # minimum 5m volume to watch
+
+# Data Storage
+data:
+  parquet_dir: "./data/parquet"
+  models_dir: "./models/saved"
+  logs_dir: "./data/logs"
+  flush_interval_sec: 300        # write parquet buffer every 5 min
+  compression: "zstd"
+
+# GPU
+gpu:
+  device: "cuda:0"
+  mixed_precision: true          # fp16 for faster training
+  batch_inference_size: 512      # score 512 tokens per batch

@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Config with secrets
+config/config.yaml
+
+# Data (too large for git)
+data/raw/
+data/parquet/
+*.db
+*.parquet
+
+# Models (too large for git)
+models/saved/*.pt
+models/saved/*.pkl
+
+# Logs
+*.log
+data/logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
